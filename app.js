@@ -152,6 +152,6 @@ app.get("/products/:postName", function(req, res){
 // app.listen(process.env.PORT || 3000, function(){
 //   console.log("SERVER STARTED PORT: 3000");
 // })
-app.listen(`0.0.0.0:3000`, function(){
+app.listen(`0.0.0.0:$PORT`, function(){
   console.log("SERVER STARTED PORT: 3000");
 })

@@ -127,21 +127,31 @@ app.get("/meniu", function(req, res){
 
 app.get("/products/:postName", function(req, res){
   const requestedPostName = req.params.postName;
-  // res.send(requestedPostName);
-  AllProduct.findOne({name: requestedPostName}, function(err, product){
-    if(err){
-      console.log(err);
+  // AllProduct.findOne({name: requestedPostName}, function(err, product){
+  //   if(err){
+  //     console.log(err);
+  //   }
+  //   else{
+  //     res.render("produs", {produs: product, items: defaultAllProducts});
+  //   }
+  // });
+  for(let i = 0; i < defaultAllProducts.length; i++){
+    if(defaultAllProducts[i].name == requestedPostName){
+      res.render("produs", {produs: defaultAllProducts[i], items:   defaultAllProducts});
     }
     else{
-      res.render("produs", {produs: product, items: defaultAllProducts});
+      console.log("error");
     }
-  })
+  }
 })
 
 // app.listen(3000, function () {
 //   console.log("Server started on port 3000");
 // });
 
-app.listen(process.env.PORT || 3000, function(){
+// app.listen(process.env.PORT || 3000, function(){
+//   console.log("SERVER STARTED PORT: 3000");
+// })
+app.listen(`0.0.0.0:3000`, function(){
   console.log("SERVER STARTED PORT: 3000");
 })

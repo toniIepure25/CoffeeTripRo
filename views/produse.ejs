@@ -1,0 +1,19 @@
+<%- include("header") -%>
+
+<main class="produse">
+    <div class="parent">
+        <div class="grid-prod">
+            <% produse.forEach(produs =>{ %>
+                <div class="card">
+                    <a href="/products/<%= produs.name %>">
+                        <img src="/images/<%= produs.image %>.png" alt="">
+                    </a>
+                    <h1><%= produs.name %></h1>
+                    <span>Vezi mai multe</span>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</main>
+
+<%- include("footer") -%>

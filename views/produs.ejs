@@ -1,0 +1,38 @@
+<%- include("header") -%>
+
+    <main class="produs">
+        <div class="container">
+            <img src="/images/<%= produs.image %>.png" alt="">
+            <h1><%= produs.name %></h1>
+            <h3><%= produs.price %> RON</h3>
+            <p><%= produs.description %></p>
+            <form action="/cumpara" method="PUT">
+                <!-- <select name="type" id="type">
+                    <option value=""></option>
+                </select> -->
+                <button class="add-cart"><span>Adauga in cos</span></button>
+            </form>
+        </div>
+        <div class="container">
+            <div class="wrapper">
+              <i id="left" class="fa-solid fa-angle-left bags"></i>
+              <div class="carousel" id="primul">
+                  <% items.forEach(item => { %>
+                      <div class="card">
+                          <a href="/products/<%= item.name %>">
+                              <img src="/images/<%= item.image %>.png" alt="" draggable="false" />
+                          </a>
+                          <div class="texthidden">
+                          <h1><%= item.name %></h1>
+                          <p>Vezi mai multe</p>
+                          </div>
+                      </div>
+                  <% }) %>
+              </div>
+              <i id="right" class="fa-solid fa-angle-right bags"></i>
+            </div>
+          </div>
+
+    </main>
+
+<%- include("footer") -%>

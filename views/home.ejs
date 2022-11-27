@@ -1,0 +1,110 @@
+<%- include("header") -%>
+
+    <main class="home">
+      <div>
+        <div class="hero-image">
+          <div class="hero-text">
+            <h1>CoffeeTrip</h1>
+            <h4>For Quality Coffee Lovers</h4>
+            <p>
+              La CoffeeTrip, garantăm iubitorilor de cafea, doar calitate și
+              cafea proaspătă, prăjită cu cel mult 2-3 săptămâni înainte de
+              savurare.
+            </p>
+          </div>
+        </div>
+        <div class="separator">
+          <img class="stanga" src="/images/Vector_stanga.png" alt="" />
+          <h1>Coffee Bags</h1>
+          <img class="dreapta" src="/images/Vector_dreapta.png" alt="" />
+        </div>
+
+        <div class="container">
+          <div class="wrapper">
+            <i id="left" class="fa-solid fa-angle-left bags"></i>
+            <div class="carousel" id="primul">
+                <% newListItems.forEach(newListItem => { %>
+                    <div class="card">
+                        <a href="/products/<%= newListItem.name %>">
+                            <img src="/images/<%= newListItem.image %>.png" alt="" draggable="false" />
+                        </a>
+                        <div class="texthidden">
+                        <h1><%= newListItem.name %></h1>
+                        <p>Vezi mai multe</p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <i id="right" class="fa-solid fa-angle-right bags"></i>
+          </div>
+        </div>
+
+        <div class="separator">
+          <img class="stanga" src="/images/Vector_stanga.png" alt="" />
+          <h1>Coffee Machines</h1>
+          <img class="dreapta" src="/images/Vector_dreapta.png" alt="" />
+        </div>
+
+        <div class="container">
+          <div class="wrapper">
+            <i id="left" class="fa-solid fa-angle-left machines"></i>
+            <div class="carousel" id="aldoilea">
+                <% machinesItems.forEach(item =>{ %>
+                    <div class="card">
+                        <a href="/products/<%= item.name%>">
+                            <img
+                            src="/images/<%= item.image%>.png"
+                            alt=""
+                            draggable="false"
+                            id="imgMachine"
+                            />
+                        </a>
+                        <div class="texthidden">
+                        <h1><%= item.name %></h1>
+                        <p>Vezi mai multe</p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <i id="right" class="fa-solid fa-angle-right machines"></i>
+          </div>
+        </div>
+
+        <div class="separator">
+          <img src="/images/vector_ambele.png" alt="" />
+        </div>
+
+        <div class="container">
+          <div class="backimg"></div>
+          <div class="backtext">
+            <h1>COFFEESHOP</h1>
+            <p>Vă așteptăm cu nerăbdare la cafenea!</p>
+            <p>
+              Până totul va fi pregătit, ne asigurăm că aveți acasă cea mai
+              bună cafea. Stați aproape și abonați-vă pentru a fi la curent cu
+              ce se întâmplă.
+            </p>
+          </div>
+        </div>
+
+        <div class="separator">
+          <img src="/images/boabe_cafea.png" alt="" />
+        </div>
+
+        <div class="container">
+          <div class="about-text">
+            <h1>NOI SUNTEM COFFEETRIP</h1>
+            <p>
+              Suntem foarte bucuroși să ne facem apariția în mediul online. Ne
+              pare bine să vă putem bucura cu o cafea proaspătă și prăjită
+              recent, noi vă stăm tot timpul la dispoziție pentru a vă îndruma
+              spre deliciile cafelei și în modul lor de preparare în casele
+              dumneavoastră.
+            </p>
+          </div>
+        </div>
+        <!--  -->
+      </div>
+    </main>
+
+<%- include("footer") -%>

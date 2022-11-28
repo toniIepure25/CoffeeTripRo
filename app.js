@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -12,9 +13,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
 
 
-mongoose.connect("mongodb://localhost:27017/templatecoffeeDB", {
-  useNewUrlParser: true,
-});
+// mongoose.connect("mongodb://localhost:27017/templatecoffeeDB", {
+//   useNewUrlParser: true,
+// });
+
+const url = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.5dwjppa.mongodb.net/test`;
+
+
+const connectionParams={
+    useNewUrlParser: true,
+    useUnifiedTopology: true 
+}
+mongoose.connect(url,connectionParams)
+    .then( () => {
+        console.log('Connected to the database ')
+    })
+    .catch( (err) => {
+        console.error(`Error connecting to the database. n${err}`);
+    })
+
 
 const productSchema = {
   name: String,
@@ -32,7 +49,6 @@ const product1 = new CoffeeProduct({
   name:"Peru San Fernando",
   image: "1",
   price: 65,
-  // description:"Producer: Cooperativa Incahauasi \n 250 gr \n Processing: Natural. \n Varietal: Caturra, Bourbon \n Notes: red apple, caramel, dried fig, roasted nut. \n Very good for filter coffee, but it can be also used for espresso and others. \n Roasted by Fluid Speciality Coffee.",
   description:`Producer: Cooperativa Incahauasi
    250 gr
   Processing: Natural.
@@ -101,17 +117,7 @@ const defaultCoffeeItems = [product1, product2, product3, product4, product5, pr
 const defaultMachineItems = [machine1, machine2, machine3];
 const defaultAllProducts = [product1, product2, product3, product4, product5, product6, product7, machine1, machine2, machine3];
 
-// AllProduct.find({}, function(err, foundProducts){
-//   if(foundProducts.length == 0){
-//       AllProduct.insertMany(defaultAllProducts, function(err) {
-//           if(err){
-//             console.log(err);
-//           } else {
-//             console.log("Added successfully!");
-//           }
-//         });
-//   }
-// });
+
 
 app.get("/", function (req, res) {
   res.render("home", {newListItems: defaultCoffeeItems, machinesItems: defaultMachineItems});
@@ -127,7 +133,6 @@ app.get("/meniu", function(req, res){
 
 app.get("/products/:postName", function(req, res){
   const requestedPostName = req.params.postName;
-  // res.send(requestedPostName);
   AllProduct.findOne({name: requestedPostName}, function(err, product){
     if(err){
       console.log(err);
@@ -135,13 +140,20 @@ app.get("/products/:postName", function(req, res){
     else{
       res.render("produs", {produs: product, items: defaultAllProducts});
     }
-  })
+  });
 })
 
-// app.listen(3000, function () {
-//   console.log("Server started on port 3000");
-// });
+app.get("/register", function(req, res){
+  res.render("register");
+})
+app.get("/login", function(req, res){
+  res.render("login");
+})
 
-app.listen(process.env.PORT || 3000, function(){
+const PORT = 3000;
+app.listen(process.env.PORT || PORT, function(){
   console.log("SERVER STARTED PORT: 3000");
 })
+// app.listen(`0.0.0.0:$PORT`, function(){
+//   console.log("SERVER STARTED PORT: 3000");
+// })

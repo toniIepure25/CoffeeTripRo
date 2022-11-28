@@ -597,3 +597,48 @@ main.produs .wrapper{
   max-width: 1200px;
   object-fit: cover;
 }
+
+/* REGISTER */
+#register h1, #login h1{
+  font-family: MetropolisBold;
+}
+#register .containere, #login .containere{
+  background-color: #EBEBEB;
+  display: flexbox;
+  justify-content: center;
+  text-align: center;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+}
+#register input, #login input{
+  width: 80%;
+  height: 25px;
+  margin-bottom: 20px;
+  outline: none;
+  padding: 5px;
+  border: none;
+  font-family: MetropolisThin;
+  
+}
+#register form, #login form {
+  width: 100%;
+}
+#register .form-group > * , #register button, #login .form-group > *, #login button{
+  box-shadow: 4px 4px 8px hsla(0, 0%, 0%, 0.25);
+}
+#register button, #login button{
+  margin-bottom: 20px;
+  border: none;
+  width: 180px;
+  height: 30px;
+  background-color: #2F4F4E;
+  color: #fff;
+  font-size: 16px;
+  font-family: MetropolisThin;
+  cursor: pointer;
+}
+#register a, #login a{
+  cursor: pointer;
+}

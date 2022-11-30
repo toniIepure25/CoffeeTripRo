@@ -1,21 +1,27 @@
-<%- include("header") -%>
+<%- include("header", {isLoggedIn: isLoggedIn, email: email}); -%>
 <main id="login">
-    <div class="parent">
-        <div class="containere">
-            <!-- <div class="child"> -->
-                <h1>Login</h1>
-                <form action="/login" method="POST">
-                    <div class="form-group">
-                        <input type="email" name="username" placeholder="Email:">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" id="" placeholder="Password:">
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-                <a href="/register">You don't have an account?</a>
-            <!-- </div> -->
-        </div>    
+  <div class="parent">
+    <div class="containere">
+      <!-- <div class="child"> -->
+      <h1>Login</h1>
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <input type="email" name="username" placeholder="Email:" required />
+        </div>
+        <div class="form-group">
+          <input
+            type="password"
+            name="password"
+            id=""
+            placeholder="Password:"
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+      <a href="/register">You don't have an account?</a>
+      <!-- </div> -->
     </div>
+  </div>
 </main>
 <%- include("footer") -%>

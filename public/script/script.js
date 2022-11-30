@@ -2,7 +2,7 @@
 const primulcarousel = document.getElementById("primul");
 const aldoileacarousel = document.getElementById("aldoilea");
 const firstImg = document.querySelector(".wrapper img");
-const firstImgM = document.getElementById("imgMachine");
+const firstImgMachines = document.getElementById("imgMachine");
 const bagsarrowIcons = document.querySelectorAll(".wrapper .bags");
 const machinesarrowIcons = document.querySelectorAll(".wrapper .machines");
 
@@ -10,9 +10,10 @@ let isDragStart = false,
   prevPageX,
   prevScrollLeft,
   positionDiff;
-let firstImgWidth = firstImg.clientWidth + 64;  
-if(firstImgM){
-  let firstImgWidthM = firstImgM.clientWidth + 52;
+let firstImgWidth = firstImg.clientWidth + 64;
+let firstImgWidthMachines;
+if (firstImgMachines) {
+  firstImgWidthMachines = firstImgMachines.clientWidth + 52;
 }
 
 bagsarrowIcons.forEach((icon) => {
@@ -25,7 +26,7 @@ bagsarrowIcons.forEach((icon) => {
 machinesarrowIcons.forEach((icon) => {
   icon.addEventListener("click", () => {
     aldoileacarousel.scrollLeft +=
-      icon.id == "left" ? -firstImgWidthM : firstImgWidthM;
+      icon.id == "left" ? -firstImgWidthMachines : firstImgWidthMachines;
   });
 });
 

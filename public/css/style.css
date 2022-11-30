@@ -70,6 +70,10 @@ header a {
   color: #ffffff;
   padding: 1rem;
 }
+header span{
+  color: #fff;
+  cursor: default;
+}
 header i {
   color: white;
 }

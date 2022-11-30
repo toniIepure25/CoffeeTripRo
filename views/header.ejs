@@ -30,12 +30,19 @@
         <!-- <div class="row right-nav menu"> -->
         <div class="row right-nav">
           <div>
+            <% if(!isLoggedIn) {%>
             <a href="/register">Sign Up</a>
+            <% } else {%>
+              <span><%= email %></span>
+              <a href="/logout" role="button">Log Out</a>
+            <% } %>
             <i class="fa-regular fa-user"></i>
           </div>
           <div>
-            <a href="">0</a>
-            <i class="fa-solid fa-bag-shopping"></i>
+            <a href="/cart">
+              0
+              <i class="fa-solid fa-bag-shopping"></i>
+            </a>
           </div>
         </div>
         <div class="menu">
@@ -48,7 +55,9 @@
             <i class="fa-regular fa-user"></i>
           </div>
           <div>
-            <a href="">0</a>
+            <a href="/cart">
+              <span>0</span>
+            </a>
             <i class="fa-solid fa-bag-shopping"></i>
           </div>
         </div>
@@ -58,3 +67,4 @@
           <span class="bar"></span>
         </div>
       </header>
+

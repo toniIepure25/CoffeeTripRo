@@ -19,19 +19,6 @@ app.use(express.static(`${__dirname}/public`));
 
 
 
-app.use(session({
-  secret: 'secret session key',
-  resave: false,
-  saveUninitialized: true,
-  store: store,
-  unset: 'destroy',
-  name: 'session cookie name'
-}));
-
-
-
-
-
 app.use(
   session({
     secret: "Our little secret.",

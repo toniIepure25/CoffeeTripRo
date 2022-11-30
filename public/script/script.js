@@ -10,10 +10,10 @@ let isDragStart = false,
   prevPageX,
   prevScrollLeft,
   positionDiff;
-let firstImgWidth = firstImg.clientWidth + 64;
+let firstImgWidth = firstImg.clientWidth + 64;  
 let firstImgWidthMachines;
-if (firstImgMachines) {
-  firstImgWidthMachines = firstImgMachines.clientWidth + 52;
+if(firstImgMachines){
+    firstImgWidthMachines = firstImgMachines.clientWidth + 52;
 }
 
 bagsarrowIcons.forEach((icon) => {

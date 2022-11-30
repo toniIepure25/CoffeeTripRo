@@ -7,17 +7,44 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 const session = require("express-session");
 const passport = require("passport");
-// const MongoDBStore = require('connect-mongodb-session')(session);
+// 
+const MongoDBStore = require('connect-mongodb-session')(session);
+// 
 const passportLocalMongoose = require("passport-local-mongoose");
 
+
 const app = express();
+
+// 
+var store = new MongoDBStore({
+  uri: `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.5dwjppa.mongodb.net/test`,
+  collection: 'mySessions'
+});
+
+store.on('error', function(error) {
+  console.log(error);
+});
+// 
 
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
 
-
+// 
+app.use(require('express-session')({
+  secret: 'This is a secret',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // 1 day
+  },
+  store: store,
+  // Boilerplate options, see:
+  // * https://www.npmjs.com/package/express-session#resave
+  // * https://www.npmjs.com/package/express-session#saveuninitialized
+  resave: true,
+  saveUninitialized: true
+}));
+// 
 
 app.use(
   session({
@@ -183,6 +210,7 @@ app.get("/", function (req, res) {
     email: email,
   });
 });
+
 
 app.get("/produse", function (req, res) {
   var email;

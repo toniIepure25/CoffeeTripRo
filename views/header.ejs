@@ -51,14 +51,19 @@
           <a href="/meniu">Meniu</a>
           <a href="">Contact</a>
           <div>
-            <a href="/register">Sign Up</a>
+            <% if(!isLoggedIn) {%>
+              <a href="/register">Sign Up</a>
+              <% } else {%>
+                <span><%= email %></span>
+                <a href="/logout" role="button">Log Out</a>
+            <% } %>
             <i class="fa-regular fa-user"></i>
           </div>
           <div>
             <a href="/cart">
               <span>0</span>
+              <i class="fa-solid fa-bag-shopping"></i>
             </a>
-            <i class="fa-solid fa-bag-shopping"></i>
           </div>
         </div>
         <div class="hamburger">

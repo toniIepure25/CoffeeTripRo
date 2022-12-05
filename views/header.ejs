@@ -40,8 +40,11 @@
           </div>
           <div>
             <a href="/cart">
-              0
-              
+              <% if(isLoggedIn) {%>
+                <%= cartNr %>
+              <% } else { %>
+                0
+              <% } %>
               <i class="fa-solid fa-bag-shopping"></i>
             </a>
           </div>
@@ -62,7 +65,11 @@
           </div>
           <div>
             <a href="/cart">
-              <span>0</span>
+              <% if(isLoggedIn) {%>
+                <%= cartNr %>
+              <% } else { %>
+                0
+              <% } %>
               <i class="fa-solid fa-bag-shopping"></i>
             </a>
           </div>

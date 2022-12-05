@@ -7,13 +7,10 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 const session = require("express-session");
 const passport = require("passport");
-// 
-// const MongoStore = require("connect-mongo")(session);
 const MongoStore = require('connect-mongo');
-// 
 const passportLocalMongoose = require("passport-local-mongoose");
 var cart = require("./models/cart");
-
+let cartNr = 0;
 
 const app = express();
 
@@ -56,6 +53,7 @@ app.use(passport.session());
 app.use(function(req, res, next){ // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
   res.locals.login = req.isAuthenticated();
   res.locals.session = req.session;
+  res.locals.cartNr = cartNr;
   next();
 });
 
@@ -313,19 +311,24 @@ app.post("/cumpara", function(req, res){
 })
 
 app.get('/add-to-cart/:name', function(req, res){
-  var productName = req.params.name;
-  var Cart = new cart(req.session.cart ? req.session.cart : {});
-
-  AllProduct.findOne({name: productName}, function(err, product) {
-    if(err) {
-      return res.redirect('/');
-    } else {
-      Cart.add(product, product.name);
-      req.session.cart = Cart;
-      console.log(Cart);
-      res.redirect(`/products/${productName}`);
-    }
-  })
+  if(req.isAuthenticated()){
+    var productName = req.params.name;
+    var Cart = new cart(req.session.cart ? req.session.cart : {});
+    
+    AllProduct.findOne({name: productName}, function(err, product) {
+      if(err) {
+        return res.redirect('/');
+      } else {
+        Cart.add(product, product.name);
+        req.session.cart = Cart;
+        cartNr = Cart.totalQty;
+        console.log(Cart);
+        res.redirect(`/products/${productName}`);
+      }
+    })
+  } else {
+    res.redirect('/register');
+  }
 });
 
 const PORT = 3000;

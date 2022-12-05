@@ -8,54 +8,20 @@ const _ = require("lodash");
 const session = require("express-session");
 const passport = require("passport");
 // 
-const MongoDBStore = require('connect-mongodb-session')(session);
+// const MongoStore = require("connect-mongo")(session);
+const MongoStore = require('connect-mongo');
 // 
 const passportLocalMongoose = require("passport-local-mongoose");
+var cart = require("./models/cart");
 
 
 const app = express();
 
-// 
-var store = new MongoDBStore({
-  uri: `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.5dwjppa.mongodb.net/test`,
-  collection: 'mySessions'
-});
-
-store.on('error', function(error) {
-  console.log(error);
-});
-// 
 
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(`${__dirname}/public`));
-
-// 
-app.use(require('express-session')({
-  secret: 'This is a secret',
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 // 1 day
-  },
-  store: store,
-  // Boilerplate options, see:
-  // * https://www.npmjs.com/package/express-session#resave
-  // * https://www.npmjs.com/package/express-session#saveuninitialized
-  resave: true,
-  saveUninitialized: true
-}));
-// 
-
-app.use(
-  session({
-    secret: "Our little secret.",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 const url = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.5dwjppa.mongodb.net/test`;
 
@@ -71,7 +37,29 @@ mongoose
   .catch((err) => {
     console.error(`Error connecting to the database. n${err}`);
   });
+  
+// 
+app.use(
+  session({
+    secret: "Our little secret.",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: url}),
+    cookie: { maxAge: 180 * 60 * 1000 }
+  })
+);
+// 
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(function(req, res, next){ // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
+  res.locals.login = req.isAuthenticated();
+  res.locals.session = req.session;
+  next();
+});
+
+// 
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
@@ -324,6 +312,21 @@ app.post("/cumpara", function(req, res){
   }
 })
 
+app.get('/add-to-cart/:name', function(req, res){
+  var productName = req.params.name;
+  var Cart = new cart(req.session.cart ? req.session.cart : {});
+
+  AllProduct.findOne({name: productName}, function(err, product) {
+    if(err) {
+      return res.redirect('/');
+    } else {
+      Cart.add(product, product.name);
+      req.session.cart = Cart;
+      console.log(Cart);
+      res.redirect(`/products/${productName}`);
+    }
+  })
+});
 
 const PORT = 3000;
 app.listen(process.env.PORT || PORT, function () {

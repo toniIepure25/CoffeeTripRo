@@ -646,3 +646,10 @@ main.produs .wrapper{
 #register a, #login a{
   cursor: pointer;
 }
+
+
+#map {
+  width: 100%;
+  height: 400px;
+  background-color: grey;
+}

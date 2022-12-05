@@ -3,18 +3,19 @@
 <main class="produs">
   <div class="container">
     <img src="/images/<%= produs.image %>.png" alt="" />
-    <h1 id="name"><%= produs.name %></h1>
+    <h1><%= produs.name %></h1>
     <h3><%= produs.price %> RON</h3>
     <p><%= produs.description %></p>
-    <form action="/cumpara" method="post">
+    <!-- <form action="/cumpara" method="post"> -->
         <!-- <section>
           <select name="type" id="type">
             <option value=""></option>
           </select>
         </section> -->
-        <button class="add-cart" type="submit"><span>Adauga in cos</span></button>
-    </form>
+        <!-- <button class="add-cart" type="submit"><span>Adauga in cos</span></button> -->
+    <!-- </form> -->
     <!-- <button class="add-cart"><span>Adauga in cos</span></button> -->
+    <a href="/add-to-cart/<%= produs.name %>">Adauga in cos</a>
   </div>
   <div class="container">
     <div class="wrapper">

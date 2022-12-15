@@ -568,6 +568,11 @@ main.produs .wrapper {
   }
 }
 
+
+.display-linebreak {
+  white-space: pre-line;
+}
+
 /* PRODUSE */
 
 .produse {
@@ -802,3 +807,4 @@ main.produs .wrapper {
   cursor: pointer;
   border-radius: 4px;
 }
+

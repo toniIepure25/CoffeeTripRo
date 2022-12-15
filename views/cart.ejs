@@ -1,0 +1,80 @@
+<%- include('header') -%>
+
+<main id="cart">
+  <div class="parrent">
+    <div class="separator">
+      <img class="stanga" src="/images/Vector_stanga.png" alt="" />
+      <h1>Cosul tau</h1>
+      <img class="dreapta" src="/images/Vector_dreapta.png" alt="" />
+    </div>
+    <div class="grid">
+      <div id="left">
+        <div class="top">
+          <h1>Produs</h1>
+          <h1>Pret</h1>
+          <h1>Cantitate</h1>
+          <h1>Total</h1>
+        </div>
+        <div class="middle">
+          <!-- <div class="mprodus">
+            <div id="produs">
+              <img src="images/1.png" alt="" />
+              <h1>Nume</h1>
+            </div>
+            <div id="pret">60 Ron</div>
+            <div id="cantitate">
+              <a href="" class="minus"><p>-</p></a>
+              <p>1</p>
+              <a href="" class="plus"><p>+</p></a>
+            </div>
+            <div id="total">60 Ron</div>
+            <div id="sterge">
+              <a href="" class="delete"><p>X</p></a>
+            </div>
+          </div> -->
+            <% productsNames.forEach((productName) => { if(Cart['items'][productName]){ %>
+            <div class="mprodus">
+              <div id="produs">
+                <img src="images/<%= Cart['items'][productName]['item']['image']%>.png" alt="" />
+                <h1><%= Cart['items'][productName]['item']['name'] %></h1>
+              </div>
+              <div id="pret"><%= Cart['items'][productName]['item']['price']%> Ron</div>
+              <div id="cantitate">
+                <a href="" class="minus"><p>-</p></a>
+                <p><%= Cart['items'][productName]['qty'] %></p>
+                <a href="" class="plus"><p>+</p></a>
+              </div>
+              <div id="total"><%= Cart['items'][productName]['price'] %> Ron</div>
+              <div id="sterge">
+                <a href="" class="delete"><p>X</p></a>
+              </div>
+            </div>
+          <% }}) %>
+        </div>
+      </div>
+      <div id="right">
+        <div class="top">
+          <h1>Rezumat Comanda</h1>
+        </div>
+        <div class="middle">
+          <div class="sub-total">
+            <h1>Subtotal</h1>
+            <h1>Transport</h1>
+            <h1>Adauga cod cupon</h1>
+          </div>
+          <div class="pret">
+            <h1><%= Cart['totalPrice'] %> Ron</h1>
+            <h1>20 Ron</h1>
+          </div>
+        </div>
+        <div class="bottom">
+          <h1>Total</h1>
+          <p><%= Cart['totalPrice'] + 20%> Ron</p>
+        </div>
+        <button>Checkout</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('footer') -%>

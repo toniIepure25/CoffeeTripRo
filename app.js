@@ -7,13 +7,26 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 const session = require("express-session");
 const passport = require("passport");
-const MongoStore = require('connect-mongo');
+const MongoStore = require("connect-mongo");
 const passportLocalMongoose = require("passport-local-mongoose");
 var cart = require("./models/cart");
 let cartNr = 0;
 
-const app = express();
+let Cart;
+let productsNames = [
+  "Peru San Fernando",
+  "Espresso Blend",
+  "Ethiopia Simageamo Haile",
+  "Ethiopia Yirgacheffe",
+  "Guatemala Santa Rita",
+  "Colombia Maritza Penna",
+  "Peru San Jose De Lourdes",
+  "Aero Press",
+  "French Press",
+  "Hario v60",
+];
 
+const app = express();
 
 app.set("view engine", "ejs");
 
@@ -34,30 +47,32 @@ mongoose
   .catch((err) => {
     console.error(`Error connecting to the database. n${err}`);
   });
-  
-// 
+
+//
 app.use(
   session({
     secret: "Our little secret.",
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: url}),
-    cookie: { maxAge: 180 * 60 * 1000 }
+    store: MongoStore.create({ mongoUrl: url }),
+    cookie: { maxAge: 180 * 60 * 1000 },
   })
 );
-// 
+//
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function(req, res, next){ // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
+app.use(function (req, res, next) {
+  // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
   res.locals.login = req.isAuthenticated();
   res.locals.session = req.session;
   res.locals.cartNr = cartNr;
+  res.locals.productsNames = productsNames;
   next();
 });
 
-// 
+//
 const userSchema = new mongoose.Schema({
   email: String,
   password: String,
@@ -127,7 +142,7 @@ const product5 = new CoffeeProduct({
 const product6 = new CoffeeProduct({
   name: "Colombia Maritza Penna",
   image: "6",
-  price: 60,
+  price: 70,
   description:
     "Processing: Natural \n Varietal: Caturra, Bourbon \n Notes: red apple, caramel, dried fig, roasted nut. \n Very good for filter coffee, but it can be also used for espresso and others. \n Roasted by Fluimage Speciality Coffee.",
 });
@@ -142,21 +157,21 @@ const product7 = new CoffeeProduct({
 const machine1 = new CoffeeProduct({
   name: "Aero Press",
   image: "AeroPress",
-  price: 65,
+  price: 219.99,
   description:
     "Processing: Natural \n Varietal: Caturra, Bourbon \n Notes: red apple, caramel, dried fig, roasted nut. \n Very good for filter coffee, but it can be also used for espresso and others. \n Roasted by Fluimage Speciality Coffee.",
 });
 const machine2 = new CoffeeProduct({
   name: "French Press",
   image: "French_press",
-  price: 65,
+  price: 149,
   description:
     "Processing: Natural \n Varietal: Caturra, Bourbon \n Notes: red apple, caramel, dried fig, roasted nut. \n Very good for filter coffee, but it can be also used for espresso and others. \n Roasted by Fluimage Speciality Coffee.",
 });
 const machine3 = new CoffeeProduct({
   name: "Hario v60",
   image: "Hario_v60",
-  price: 65,
+  price: 169.99,
   description:
     "Processing: Natural \n Varietal: Caturra, Bourbon \n Notes: red apple, caramel, dried fig, roasted nut. \n Very good for filter coffee, but it can be also used for espresso and others. \n Roasted by Fluimage Speciality Coffee.",
 });
@@ -184,9 +199,11 @@ const defaultAllProducts = [
   machine3,
 ];
 
+AllProduct.insertMany(defaultAllProducts);
+
 app.get("/", function (req, res) {
   var email;
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     email = req.user.username;
   }
   res.render("home", {
@@ -197,27 +214,29 @@ app.get("/", function (req, res) {
   });
 });
 
-
 app.get("/produse", function (req, res) {
   var email;
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     email = req.user.username;
   }
-  res.render("produse", { produse: defaultAllProducts,    isLoggedIn: req.isAuthenticated(),
-    email: email, });
+  res.render("produse", {
+    produse: defaultAllProducts,
+    isLoggedIn: req.isAuthenticated(),
+    email: email,
+  });
 });
 
 app.get("/meniu", function (req, res) {
   var email;
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     email = req.user.username;
   }
-  res.render("meniu", {isLoggedIn: req.isAuthenticated(),email: email, });
+  res.render("meniu", { isLoggedIn: req.isAuthenticated(), email: email });
 });
 
 app.get("/products/:postName", function (req, res) {
   var email;
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     email = req.user.username;
   }
   const requestedPostName = req.params.postName;
@@ -225,24 +244,29 @@ app.get("/products/:postName", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render("produs", { produs: product, items: defaultAllProducts, isLoggedIn: req.isAuthenticated(),email: email, });
+      res.render("produs", {
+        produs: product,
+        items: defaultAllProducts,
+        isLoggedIn: req.isAuthenticated(),
+        email: email,
+      });
     }
   });
 });
 
 app.get("/register", function (req, res) {
   var email;
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     email = req.user.username;
   }
-  res.render("register", {isLoggedIn: req.isAuthenticated(), email: email,});
+  res.render("register", { isLoggedIn: req.isAuthenticated(), email: email });
 });
 app.get("/login", function (req, res) {
   var email;
-  if(req.isAuthenticated()){
+  if (req.isAuthenticated()) {
     email = req.user.username;
-  } 
-  res.render("login", {isLoggedIn: req.isAuthenticated(),email: email,});
+  }
+  res.render("login", { isLoggedIn: req.isAuthenticated(), email: email });
 });
 
 app.post("/register", function (req, res) {
@@ -263,61 +287,65 @@ app.post("/register", function (req, res) {
 });
 
 app.post("/login", function (req, res) {
-
   const user = new User({
     username: req.body.username,
-    password: req.body.password
-  })
+    password: req.body.password,
+  });
 
-  req.login(user, function(err){
-    if(err){
+  req.login(user, function (err) {
+    if (err) {
       console.log(err);
     } else {
       passport.authenticate("local")(req, res, function () {
         res.redirect("/");
       });
     }
-  })
-
+  });
 });
 
-app.get("/logout", function(req, res){
-  req.logout(function(err){
-    if(err) {console.log(err);}
-    else{
-    res.redirect("/");
+app.get("/logout", function (req, res) {
+  req.logout(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
     }
   });
-})
+});
 
-
-app.get("/cart", function(req, res) {
-  console.log(req.isAuthenticated());
-  if(req.isAuthenticated()){
-    // res.render("cart");
-    res.send("Salut");
+app.get("/cart", function (req, res) {
+  if (req.isAuthenticated()) {
+    var email;
+    if (req.isAuthenticated()) {
+      email = req.user.username;
+    }
+    console.log(Cart);
+    res.render("cart", {
+      isLoggedIn: req.isAuthenticated(),
+      email: email,
+      Cart: Cart,
+    });
   } else {
     res.redirect("/register");
   }
 });
 
-app.post("/cumpara", function(req, res){
-  console.log(req.isAuthenticated());
-  if(req.isAuthenticated()){
+app.post("/cumpara", function (req, res) {
+  if (req.isAuthenticated()) {
     console.log(req.body);
   } else {
     res.redirect("/register");
   }
-})
+});
 
-app.get('/add-to-cart/:name', function(req, res){
-  if(req.isAuthenticated()){
+app.get("/add-to-cart/:name", function (req, res) {
+  if (req.isAuthenticated()) {
     var productName = req.params.name;
-    var Cart = new cart(req.session.cart ? req.session.cart : {});
-    
-    AllProduct.findOne({name: productName}, function(err, product) {
-      if(err) {
-        return res.redirect('/');
+    Cart = new cart(req.session.cart ? req.session.cart : {});
+
+    AllProduct.findOne({ name: productName }, function (err, product) {
+      if (err) {
+        return res.redirect("/");
       } else {
         Cart.add(product, product.name);
         req.session.cart = Cart;
@@ -325,9 +353,9 @@ app.get('/add-to-cart/:name', function(req, res){
         console.log(Cart);
         res.redirect(`/products/${productName}`);
       }
-    })
+    });
   } else {
-    res.redirect('/register');
+    res.redirect("/register");
   }
 });
 

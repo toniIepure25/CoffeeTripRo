@@ -371,6 +371,28 @@ app.get("/remove/:name", function(req, res){
   res.redirect('/cart');
 });
 
+app.get("/add-qty/:name", function(req, res) {
+  let name = req.params.name;
+  // Cart['items'][name]['qty'] += 1;
+  // Cart['items'][name]['price'] += 
+
+  AllProduct.findOne({ name: name }, function (err, product) {
+    if (err) {
+      return res.redirect("/");
+    } else {
+      Cart.add(product, product.name);
+      req.session.cart = Cart;
+      cartNr = Object.keys(Cart['items']).length;
+      res.redirect('/cart');
+    }
+  });
+});
+
+app.get("/remove-qty/:name", function(req, res){ 
+  
+
+});
+
 const PORT = 3000;
 app.listen(process.env.PORT || PORT, function () {
   console.log("SERVER STARTED PORT: 3000");

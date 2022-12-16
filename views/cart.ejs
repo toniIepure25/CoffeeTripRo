@@ -25,9 +25,9 @@
               </div>
               <div id="pret"><%= Cart['items'][productName]['item']['price']%> Ron</div>
               <div id="cantitate">
-                <a href="" class="minus" ><p>-</p></a>
+                <a href="/remove-qty/<%= productName %>" class="minus"><p>-</p></a>
                 <p><%= Cart['items'][productName]['qty'] %></p>
-                <a href="" class="plus"><p>+</p></a>
+                <a href="/add-qty/<%= productName %>" class="plus"><p>+</p></a>
               </div>
               <div id="total"><%= Cart['items'][productName]['price'] %> Ron</div>
               <div id="sterge">

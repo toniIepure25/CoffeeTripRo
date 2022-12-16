@@ -389,8 +389,19 @@ app.get("/add-qty/:name", function(req, res) {
 });
 
 app.get("/remove-qty/:name", function(req, res){ 
-  
-
+  let name = req.params.name;
+  if(Cart['items'][name]['qty'] === 1) {
+    res.redirect('/remove/' + name);
+  } else {
+    let pret = Cart['items'][name]['price'] / Cart['items'][name]['qty'];
+    Cart['items'][name]['qty'] -= 1;
+    Cart['items'][name]['price'] -= pret;
+    Cart['totalQty'] -= 1;
+    Cart['totalPrice'] -= pret;
+    
+    req.session.cart = Cart;
+    res.redirect('/cart');
+  }
 });
 
 const PORT = 3000;

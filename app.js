@@ -10,9 +10,10 @@ const passport = require("passport");
 const MongoStore = require("connect-mongo");
 const passportLocalMongoose = require("passport-local-mongoose");
 var cart = require("./models/cart");
-let cartNr = 0;
 
 let Cart;
+let cartNr = 0;
+
 let productsNames = [
   "Peru San Fernando",
   "Espresso Blend",
@@ -319,7 +320,6 @@ app.get("/cart", function (req, res) {
     if (req.isAuthenticated()) {
       email = req.user.username;
     }
-    console.log(Cart);
     res.render("cart", {
       isLoggedIn: req.isAuthenticated(),
       email: email,
@@ -349,14 +349,26 @@ app.get("/add-to-cart/:name", function (req, res) {
       } else {
         Cart.add(product, product.name);
         req.session.cart = Cart;
-        cartNr = Cart.totalQty;
-        console.log(Cart);
+        cartNr = Object.keys(Cart['items']).length;
         res.redirect(`/products/${productName}`);
       }
     });
   } else {
     res.redirect("/register");
   }
+});
+
+app.get("/remove/:name", function(req, res){
+  Cart['totalPrice'] -= (Cart['items'][req.params.name]['price']);
+  Cart['totalQty'] -= Cart['items'][req.params.name]['qty'];
+  Cart['items'][req.params.name]['price'] = 0;
+  Cart['items'][req.params.name]['qty'] = 0;
+  req.session.cart = Cart;
+  console.log(req.session.cart);  
+  delete Cart['items'][req.params.name];
+  cartNr = Object.keys(Cart['items']).length;
+  console.log(Cart);
+  res.redirect('/cart');
 });
 
 const PORT = 3000;

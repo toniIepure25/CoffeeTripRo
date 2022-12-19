@@ -1,0 +1,48 @@
+<%- include('header') -%>
+
+<main id="checkout">
+    <div class="parent">
+        <form action="/checkout" method="post" id="checkout-form">
+            <h1>Totalul de plata: <%= Cart['totalPrice'] + 20 %> Ron</h1>
+            <div id="charge-error" class="hidden">
+            </div>
+            <div class="row">
+                <label for="fullname">Numele intreg</label>
+                <input type="text" id="fullname" required>
+            </div>
+            <div class="row">
+                <label for="adressa">Adresa</label>
+                <input type="text" id="addresa" required>
+            </div>
+            <div class="row">
+                <label for="tel-nr">Numarul de telefon</label>
+                <input type="text" id="tel-nr" required>
+            </div>
+            <div class="row">
+                <label for="card-name">Numele Detinatorului Cardului</label>
+                <input type="text" id="card-name" required>
+            </div>
+            <div class="row">
+                <label for="card-nr">Numarul Cardului</label>
+                <input type="text" id="card-nr" required>
+            </div>
+            <div class="row-s">
+                <label for="card-expm">Luna Expirarii</label>
+                <input type="text" id="card-expm" required>
+                <label for="card-expy">Anul`Expirarii</label>
+                <input type="text" id="card-expy" required>
+                <!-- <label for="card-exp">Data expirarii</label>
+                <input type="month" id="bdaymonth" name="card-exp"> -->
+            </div>
+            <div class="row">
+                <label for="card-cvc">CVC</label>
+                <input type="text" id="card-cvc" required>
+            </div>
+            <button type="submit" class="">Cumpara</button>
+        </form>
+    </div>
+</main>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/script/checkout.js"></script>
+
+<%- include('footer') -%>

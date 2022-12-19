@@ -10,7 +10,11 @@ const passport = require("passport");
 const MongoStore = require("connect-mongo");
 const passportLocalMongoose = require("passport-local-mongoose");
 var cart = require("./models/cart");
+// 
+import {loadStripe} from '@stripe/stripe-js';
 
+const stripe = await loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+// 
 let Cart;
 let cartNr = 0;
 
@@ -67,6 +71,7 @@ app.use(passport.session());
 app.use(function (req, res, next) {
   // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
   res.locals.login = req.isAuthenticated();
+  // res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.session = req.session;
   res.locals.cartNr = cartNr;
   res.locals.productsNames = productsNames;
@@ -200,7 +205,7 @@ const defaultAllProducts = [
   machine3,
 ];
 
-AllProduct.insertMany(defaultAllProducts);
+// AllProduct.insertMany(defaultAllProducts);
 
 app.get("/", function (req, res) {
   var email;
@@ -364,10 +369,8 @@ app.get("/remove/:name", function(req, res){
   Cart['items'][req.params.name]['price'] = 0;
   Cart['items'][req.params.name]['qty'] = 0;
   req.session.cart = Cart;
-  console.log(req.session.cart);  
   delete Cart['items'][req.params.name];
   cartNr = Object.keys(Cart['items']).length;
-  console.log(Cart);
   res.redirect('/cart');
 });
 
@@ -404,6 +407,46 @@ app.get("/remove-qty/:name", function(req, res){
   }
 });
 
+app.get('/checkout', function(req, res){
+  var email;
+  if (req.isAuthenticated()) {
+    email = req.user.username;
+  }
+  if(!req.session.cart){
+    res.redirect('/');
+  } else {
+    // var errMsg = req.flash('errors')[0];
+    res.render('checkout', {
+      isLoggedIn: req.isAuthenticated(),
+      email: email,
+      Cart: Cart,
+    });
+  }
+});
+
+const calculateOrderAmount = () => {
+  return Cart['totalPrice'] + 20;
+};
+
+app.post("/checkout", async (req, res) => {
+  // const { items } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(),
+    currency: "usd",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
+
+
+// 
 const PORT = 3000;
 app.listen(process.env.PORT || PORT, function () {
   console.log("SERVER STARTED PORT: 3000");

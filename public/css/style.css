@@ -64,6 +64,10 @@ a:hover {
   color: #e4c7a6;
 }
 
+.hidden {
+  display: hidden;
+}
+
 /* Header */
 
 header a {
@@ -808,3 +812,38 @@ main.produs .wrapper {
   border-radius: 4px;
 }
 
+#checkout {
+  display: flex;
+  justify-content: center;
+}
+#checkout .parent {
+  display: flex;
+}
+#checkout-form .row {
+  margin-top: 10px;
+}
+#checkout-form label, input {
+  font-size: 20px;
+}
+#checkout-form input {
+  border: 1px solid rgba(0, 0, 0, 0.46);
+  width: 100%;
+  height: 20px;
+  padding: 10px;
+}
+#checkout-form button {
+  margin-top: 20px;
+  height: 50px;
+  width: 40%;
+  font-size: 20px;
+  background-color:#2f4f4e;
+  color: #fff;
+}
+input#card-expy, input#card-expm{
+  width: 28%;
+}
+.row-s {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

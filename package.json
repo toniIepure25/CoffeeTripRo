@@ -12,9 +12,11 @@
   "dependencies": {
     "@aws-cdk/aws-apprunner": "^1.181.0",
     "@aws-cdk/aws-ecr-assets": "^1.181.0",
+    "@stripe/stripe-js": "^1.46.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
+    "connect-flash": "^0.1.1",
     "connect-mongo": "^4.6.0",
     "connect-mongodb-session": "^3.1.1",
     "dotenv": "^16.0.3",
@@ -29,6 +31,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^7.1.2"
+    "passport-local-mongoose": "^7.1.2",
+    "stripe": "^11.4.0"
   }
 }

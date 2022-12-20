@@ -12,6 +12,9 @@ const passportLocalMongoose = require("passport-local-mongoose");
 var cart = require("./models/cart");
 let Cart;
 let cartNr = 0;
+// 
+const stripe = require('stripe')(process.env.STRIPE_KEY);
+// 
 
 let productsNames = [
   "Peru San Fernando",
@@ -66,7 +69,6 @@ app.use(passport.session());
 app.use(function (req, res, next) {
   // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
   res.locals.login = req.isAuthenticated();
-  // res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.session = req.session;
   res.locals.cartNr = cartNr;
   res.locals.productsNames = productsNames;
@@ -94,6 +96,7 @@ const productSchema = {
   price: Number,
   description: String,
   rating: Number,
+  stripe_id: String,
 };
 
 const CoffeeProduct = mongoose.model("CoffeeProduct", productSchema);
@@ -111,6 +114,7 @@ const product1 = new CoffeeProduct({
   Notes: red apple, caramel, dried fig, roasted nut.
   Very good for filter coffee, but it can be also used for espresso and others.Roasted by Fluid Speciality Coffee.`,
   rating: 4.5,
+  stripe_id: 'price_1MGkq5AlBECR2BsEwsRw8jI6',
 });
 const product2 = new CoffeeProduct({
   name: "Espresso Blend",
@@ -118,6 +122,7 @@ const product2 = new CoffeeProduct({
   price: 60,
   description:
     "Espresso Blend \n 250 gr \n Ethiopia  Yirgacheffe Wonago & Guatemala Santa Rita \n Notes: honey, black tea, cocoa. \n Roasted in Bucharest by Fluid Speciality Coffee.",
+  stripe_id: 'price_1MGp5rAlBECR2BsEARiFazGM',
 });
 const product3 = new CoffeeProduct({
   name: "Ethiopia Simageamo Haile",
@@ -371,8 +376,6 @@ app.get("/remove/:name", function(req, res){
 
 app.get("/add-qty/:name", function(req, res) {
   let name = req.params.name;
-  // Cart['items'][name]['qty'] += 1;
-  // Cart['items'][name]['price'] += 
 
   AllProduct.findOne({ name: name }, function (err, product) {
     if (err) {
@@ -418,6 +421,35 @@ app.get('/checkout', function(req, res){
   }
 });
 
+app.post('/checkout', async (req, res) => {
+  const cart_items = [];
+  productsNames.forEach(productName => {
+      if(productName in Cart['items']) {
+        AllProduct.findOne({name: productName}, function(err, product){ 
+            if(err) {
+              console.log(err);
+            } else {
+              cart_items.push({price: product.stripe_id, quantity: Cart['items'][productName]['qty']});
+            }
+        });
+      }
+  })
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price: 'price_1MGkq5AlBECR2BsEwsRw8jI6',
+        quantity: 1,
+      },
+    ],
+    mode: 'payment',
+    success_url: `https://localhost:3000/home`,
+    cancel_url: `https://localhost:3000/cart`,
+  });
+
+  
+  res.redirect(303, session.url);
+});
 
 // 
 const PORT = 3000;

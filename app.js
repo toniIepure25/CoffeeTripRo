@@ -10,7 +10,7 @@ const passport = require("passport");
 const MongoStore = require("connect-mongo");
 const passportLocalMongoose = require("passport-local-mongoose");
 var cart = require("./models/cart");
-let Cart;
+let Cart = { items: {}};
 let cartNr = 0;
 // 
 const stripe = require('stripe')(process.env.STRIPE_KEY);
@@ -70,7 +70,8 @@ app.use(function (req, res, next) {
   // I CAN ACCESS THIS VARIEBLES IN ALL THE VIEWS
   res.locals.login = req.isAuthenticated();
   res.locals.session = req.session;
-  res.locals.cartNr = cartNr;
+  // res.locals.cartNr = cartNr;
+  res.locals.cartNr = Object.keys(Cart['items']).length;
   res.locals.productsNames = productsNames;
   next();
 });
@@ -320,7 +321,7 @@ app.get("/logout", function (req, res) {
 });
 
 app.get("/cart", function (req, res) {
-  if (req.isAuthenticated()) {
+  // if (req.isAuthenticated()) {
     var email;
     if (req.isAuthenticated()) {
       email = req.user.username;
@@ -330,10 +331,10 @@ app.get("/cart", function (req, res) {
       email: email,
       Cart: Cart,
     });
-  } else {
-    res.redirect("/register");
-  }
-});
+  // } else {
+  //   res.redirect("/register");
+  // }
+  });
 
 app.post("/cumpara", function (req, res) {
   if (req.isAuthenticated()) {
@@ -344,7 +345,7 @@ app.post("/cumpara", function (req, res) {
 });
 
 app.get("/add-to-cart/:name", function (req, res) {
-  if (req.isAuthenticated()) {
+  // if (req.isAuthenticated()) {
     var productName = req.params.name;
     Cart = new cart(req.session.cart ? req.session.cart : {});
 
@@ -358,9 +359,9 @@ app.get("/add-to-cart/:name", function (req, res) {
         res.redirect(`/products/${productName}`);
       }
     });
-  } else {
-    res.redirect("/register");
-  }
+  // } else {
+  //   res.redirect("/register");
+  // }
 });
 
 app.get("/remove/:name", function(req, res){

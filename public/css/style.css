@@ -694,7 +694,7 @@ main.produs .wrapper {
     flex-wrap: wrap;
     justify-content: center;
   }
-  #left {
+  #cart #left {
     width: 100%;
   }
 }
@@ -881,6 +881,7 @@ input#card-expy, input#card-expm{
   border-radius: 10px 10px 0 0;
   width: 50%;
   height: 10%;
+  margin-bottom: 40px;
 }
 .btns{
   display: flex;

@@ -443,8 +443,8 @@ app.post('/checkout', async (req, res) => {
       },
     ],
     mode: 'payment',
-    success_url: `https://localhost:3000/home`,
-    cancel_url: `https://localhost:3000/cart`,
+    success_url: `${process.env.DOMAIN}`,
+    cancel_url: `${process.env.DOMAIN}/cart`,
   });
 
   

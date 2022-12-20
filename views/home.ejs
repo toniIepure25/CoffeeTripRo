@@ -1,6 +1,16 @@
 <%- include("header", {isLoggedIn: isLoggedIn, email: email}); -%>
 
     <main class="home">
+      <div class="cookie-consent-modal">
+        <div class="content">
+          <h1>Allow Cookies</h1>
+          <p>We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you’ve provided to them or that they’ve collected from your use of their services.</p>
+          <div class="btns">
+            <button class="cbtn cancel">Cancel</button>
+            <button class="cbtn accept">Accept</button>
+          </div>
+        </div>
+      </div>
       <div>
         <div class="hero-image">
           <div class="hero-text">

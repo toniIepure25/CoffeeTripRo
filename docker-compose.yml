@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  app:
+    image: node:18-alpine
+    working_dir: /
+    volumes:
+      - .:/app
+    ports:
+      - "3000"
+    command: npm start
+    environment:
+      - NODE_ENV=production
+      - PORT=3000

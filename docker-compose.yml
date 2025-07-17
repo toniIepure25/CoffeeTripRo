@@ -1,8 +1,0 @@
-version: "3.9"
-services:
-  app:
-    image: node:18-alpine
-    working_dir: /app
-    ports:
-      - "3000" # Assuming the app runs on port 3000; adjust if necessary.
-    command: npm start

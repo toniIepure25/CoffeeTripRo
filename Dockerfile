@@ -1,1 +1,0 @@
-FROM node:18-alpine\nWORKDIR /app\nCOPY package*.json .\nRUN npm install --production\nCOPY . .\nEXPOSE 3000\nCMD ["npm", "start"]

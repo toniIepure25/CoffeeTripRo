@@ -1,21 +1,27 @@
-# syntax=docker/dockerfile:1.4
-FROM node:18-alpine AS builder
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install --production
-
-COPY . ./
-
-# Multi-stage build - production image
+# Use an official Node.js runtime as a parent image
 FROM node:18-alpine
 
-WORKDIR /app
+# Set the working directory in the container
+WORKDIR / 
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app ./ 
+# Copy package*.json to the working directory
+COPY package*.json ./
 
+# Install application dependencies
+RUN npm install --production
+
+# Copy the rest of the application code into the container
+COPY . .
+
+# Expose the port your app runs on
 EXPOSE 3000
 
+# Define environment variable
+ENV PORT=3000
+ENV NODE_ENV=production
+
+# Command to run the application
 CMD ["node", "app.js"]
+
+# .dockerignore
+node_modules/

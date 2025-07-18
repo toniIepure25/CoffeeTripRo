@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
   app:
     build:
@@ -6,4 +6,5 @@ services:
       dockerfile: Dockerfile
     environment:
       NODE_ENV: production
+      PORT: 3000 # Example, adjust as needed.
     working_dir: /

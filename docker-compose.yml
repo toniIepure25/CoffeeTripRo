@@ -1,0 +1,8 @@
+services:
+  app:
+    build: .
+    expose:
+    - '3000'
+    labels:
+    - com.yourdomain.project.id=68839ae3d6da35c8b5c2553c
+    - com.yourdomain.project.name=CoffeeTripRo

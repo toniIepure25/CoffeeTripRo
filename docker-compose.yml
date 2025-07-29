@@ -4,5 +4,5 @@ services:
     expose:
     - '3000'
     labels:
-    - com.yourdomain.project.id=68839ae3d6da35c8b5c2553c
     - com.yourdomain.project.name=CoffeeTripRo
+    - com.yourdomain.project.id=68889a5d519cfc6e58c5884c
